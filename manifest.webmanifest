@@ -1,0 +1,8 @@
+{
+  "name": "Swap",
+  "short_name": "Swap",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#222229",
+  "description": "A circle swap."
+}
