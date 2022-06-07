@@ -339,6 +339,8 @@ class App {
   checkBallsRow(ball, direction = "x") {
     /** @type {Ball[]} */
     let stack = []
+    let result = false
+
     for (let i = 0; i < this.cols; i++) {
       const lastBall = stack[stack.length - 1]
       const currentPoint =
@@ -347,15 +349,23 @@ class App {
           : new Vector(this.getCellCoords(ball.destination).x, i)
       const currentBall = this.balls.get(currentPoint.toString())
 
-      if (lastBall && lastBall.color !== currentBall.color) stack = []
-      stack.push(currentBall)
-
-      if (stack.length >= App.MIN_BALLS_FOR_DESTROY) {
-        this.destroyBallsRow(stack)
-        return true
+      if (lastBall && lastBall.color !== currentBall.color) {
+        // Check a right row for destroy
+        if (stack.length >= App.MIN_BALLS_FOR_DESTROY) {
+          this.destroyBallsRow(stack)
+          result = true
+        }
+        stack = []
       }
+      stack.push(currentBall)
     }
-    return false
+
+    if (stack.length >= App.MIN_BALLS_FOR_DESTROY) {
+      this.destroyBallsRow(stack)
+      result = true
+    }
+
+    return result
   }
 }
 
